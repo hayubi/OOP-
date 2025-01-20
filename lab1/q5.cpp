@@ -38,7 +38,7 @@ int main()
     Event* events = new Event[numEvents];
 
     cin.ignore();
-    for (int i = 0; i < numEvents; i++) 
+    for (int i=0; i<numEvents; i++) 
     {
         cout << "\nEvent " << i + 1 << " details:" << endl;
 
@@ -62,7 +62,7 @@ int main()
     cout << "\nEvents on " << searchDate << ":" << endl;
     bool found = false;
 
-    for (int i = 0; i < numEvents; i++) 
+    for (int i=0; i<numEvents; i++) 
     {
         if (strcmp(events[i].date, searchDate) == 0) 
         {
