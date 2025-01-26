@@ -7,22 +7,39 @@ Input: height = [1,8,6,2,5,4,8,3,7]
 Output: 49
 Explanation: The above vertical lines are represented by array
 [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the
-container can contain is 49.*/
+container can contain is 49.
+Area=min(height[i],height[j])×(j−i)
+*/
 
 #include <iostream>
 using namespace std;
+
 int main()
 {
     int n;
-    cout << "Enter the size of array: ";
+    cout << "Enter the number of vertical lines: ";
     cin >> n;
 
-    int array[n];
-    cout << "Enter " << n << " numbers:" << endl;
+    int heights[n];
+    cout << "Enter the heights of vertical lines: " << endl;
+    for (int i=0; i<n; i++)
+        {cin >> heights[i];}
+    
+    int maxArea=0;
     for (int i=0; i<n; i++)
     {
-        cin >> array[i];
+        for (int j=i+1; j<n; j++)
+        {
+            int minHeight;
+            if (heights[i] < heights[j])
+                {minHeight = heights[i];}
+            else
+                {minHeight = heights[j];}
+            
+            int area = minHeight * (j-i);
+            if (area > maxArea)
+                {maxArea = area;}
+        }
     }
-
-    
+    cout << "The maximum area of water the container can store is: " << maxArea << endl;
 }
