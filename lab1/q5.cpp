@@ -40,12 +40,12 @@ int main()
     cin.ignore();
     for (int i=0; i<numEvents; i++) 
     {
-        cout << "\nEvent " << i + 1 << " details:" << endl;
+        cout << "\nEvent " << i+1 << " details:" << endl;
 
         cout << "Enter event name: ";
         cin.getline(events[i].name, 50);
 
-        cout << "Enter event date(YYYY-MM-DD): ";
+        cout << "Enter event date(yyyy-mm-dd): ";
         cin.getline(events[i].date, 11);
 
         cout << "Enter event venue: ";
@@ -56,7 +56,7 @@ int main()
     }
 
     char searchDate[11];
-    cout << "\nEnter a date (YYYY-MM-DD) to search for events: ";
+    cout << "\nEnter a date (yyyy-mm-dd) to search for events: ";
     cin >> searchDate;
 
     cout << "\nEvents on " << searchDate << ":" << endl;
