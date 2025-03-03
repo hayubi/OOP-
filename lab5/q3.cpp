@@ -19,6 +19,7 @@ class ValidateString
     public:
         ValidateString(string w) : word(w) {}
 
+        // We make this function constant because it does not modify the state of the object. It only reads the word and checks if all characters are alphabetic.
         bool checkAlphabets() const
         {
             for (char c: word)
