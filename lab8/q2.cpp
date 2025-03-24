@@ -6,7 +6,7 @@ class Account
     private:
         string accountNumber, accountHolder;
         double balance;
-        
+
     public:
         Account(string number, string holder, double bal) : accountNumber(number), accountHolder(holder), balance(bal) {}
 
@@ -17,7 +17,8 @@ class Account
 
         Account& operator-(double amount) 
         { 
-            balance -= amount; return *this; 
+            balance = balance - amount; 
+            return *this; 
         }
 
         bool operator>(const Account &acc) const 
