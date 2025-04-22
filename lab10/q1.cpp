@@ -1,103 +1,98 @@
+/*Q1. You are building a student record management tool for a university system.
+Requirements:
+1.⁠ ⁠Define a structure Student with the following fields:
+    ○ int id
+    ○ string name
+    ○ float gpa
+Prompt the user to enter data for 5 students.
+Write these records to a file named students.txt using ofstream with ios::out
+mode.
+Then, allow the user to append 1 additional student record using ios::app mode
+(open in append mode and write without erasing old content).
+Finally, read and display all student records from the file using ifstream.*/
+
 #include <iostream>
 #include <fstream>
 using namespace std;
 
-class Student 
+struct Student 
 {
-    public:
-        int id;
-        string name;
-        float gpa;
-
-        void input() {
-            cout << "ID: ";
-            cin >> id;
-            cin.ignore();
-            cout << "Name: ";
-            getline(cin, name);
-            cout << "GPA: ";
-            cin >> gpa;
-        }
-
-        void display() const {
-            cout << "ID: " << id << ", Name: " << name << ", GPA: " << gpa << "\n";
-        }
-
-        void writeToFile(ofstream &outFile) const {
-            outFile << id << " " << name << " " << gpa << "\n";
-        }
-
-        bool readFromFile(ifstream &inFile) 
-        {
-            inFile >> id >> ws;
-            if (!getline(inFile, name, ' ')) return false;
-            return (inFile >> gpa);
-        }
+    int id;
+    string name;
+    float gpa;
 };
 
-class StudentManager 
+void writeInitialRecords() 
 {
-    public:
-        void addInitialStudents() 
-        {
-            ofstream outFile("students.txt", ios::out);
-            if (!outFile) 
-            {
-                cerr << "Error opening file for writing.\n";
-                return;
-            }
+    ofstream outFile("students.txt", ios::out);
+    if (!outFile) 
+    {
+        cerr << "Error opening file for writing.\n";
+        return;
+    }
 
-            Student s;
-            for (int i=0; i<5; ++i) 
-            {
-                cout << "Enter details for student " << i + 1 << ":\n";
-                s.input();
-                s.writeToFile(outFile);
-            }
+    Student s;
+    for (int i=0; i<5; ++i) 
+    {
+        cout << "Enter details for student " << i + 1 << ":\n";
+        cout << "ID: ";
+        cin >> s.id;
+        cin.ignore();
+        cout << "Name: ";
+        getline(cin, s.name);
+        cout << "GPA: ";
+        cin >> s.gpa;
 
-            outFile.close();
-        }
+        outFile << s.id << " " << s.name << " " << s.gpa << "\n";
+    }
+    outFile.close();
+}
 
-        void appendStudent() 
-        {
-            ofstream outFile("students.txt", ios::app);
-            if (!outFile) 
-            {
-                cerr << "Error opening file for appending.\n";
-                return;
-            }
+void appendStudentRecord() 
+{
+    ofstream outFile("students.txt", ios::app);
+    if (!outFile) 
+    {
+        cerr << "Error opening file for appending.\n";
+        return;
+    }
 
-            Student s;
-            cout << "\nEnter details for additional student:\n";
-            s.input();
-            s.writeToFile(outFile);
+    Student s;
+    cout << "\nEnter details for additional student:\n";
+    cout << "ID: ";
+    cin >> s.id;
+    cin.ignore();
+    cout << "Name: ";
+    getline(cin, s.name);
+    cout << "GPA: ";
+    cin >> s.gpa;
 
-            outFile.close();
-        }
+    outFile << s.id << " " << s.name << " " << s.gpa << "\n";
+    outFile.close();
+}
 
-        void displayAllStudents() 
-        {
-            ifstream inFile("students.txt");
-            if (!inFile) 
-            {
-                cerr << "Error opening file for reading.\n";
-                return;
-            }
+void displayRecords() 
+{
+    ifstream inFile("students.txt");
+    if (!inFile) 
+    {
+        cerr << "Error opening file for reading.\n";
+        return;
+    }
 
-            Student s;
-            cout << "\nStudent Records:\n";
-            while (s.readFromFile(inFile)) 
-            {
-                s.display();
-            }
-            inFile.close();
-        }
-};
+    Student s;
+    cout << "\nStudent Records:\n";
+    while (inFile >> s.id >> ws && getline(inFile, s.name, ' ') && inFile >> s.gpa) 
+    {
+        cout << "ID: " << s.id << ", Name: " << s.name << ", GPA: " << s.gpa << "\n";
+    }
+
+    inFile.close();
+}
 
 int main() 
 {
-    StudentManager manager;
-    manager.addInitialStudents();
-    manager.appendStudent();
-    manager.displayAllStudents();
+    writeInitialRecords();
+    appendStudentRecord();
+    displayRecords();
 }
