@@ -1,36 +1,37 @@
 #include <iostream>
-#include <exception>
 using namespace std;
 
-class InvalidValueException : public exception 
+class InvalidValueException : public exception
 {
     public:
-        const char* what() const noexcept override 
+        InvalidValueException() {}
+
+        const char* what() const noexcept override
         {
-            return "InvalidValueException - Age cannot be negative or exceed 120.";
+            return "invalid age";
         }
 };
 
-void validateAge(int age) 
+void ValidateAge(int age)
 {
     if (age < 0 || age > 120)
-        throw InvalidValueException();
-    else
-        cout << "Valid age entered: " << age << endl;
+    {
+        throw InvalidValueException(); //throwing an instance of InvalidValueException
+    }
 }
 
-int main() 
+int main()
 {
     int age;
-    cout << "Enter age: ";
+    cout << "ente the age: " << endl;
     cin >> age;
-
-    try 
+    try
     {
-        validateAge(age);
+        ValidateAge(age);
+        cout << "Age is " << age << endl;
     }
-    catch (const InvalidValueException& ex) 
+    catch(const exception& e)
     {
-        cout << "Error: " << ex.what() << endl;
+        cout << "Exception occurred: " << e.what() << endl;
     }
 }
