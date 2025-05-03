@@ -1,84 +1,81 @@
 #include <iostream>
-#include <exception>
 using namespace std;
 
-class StackOverflowException : public exception 
+class StackOverflowException : public exception
 {
-    public:
-        const char* what() const noexcept override 
+    public: 
+        const char* what() const noexcept override
         {
-            return "StackOverflowException - Stack is full!";
+            return "StackOverflowException - Stack is full";
         }
 };
 
-class StackUnderflowException : public exception 
+class StackUnderflowException : public exception
 {
-    public:
-        const char* what() const noexcept override 
+    public: 
+        const char* what() const noexcept override
         {
-            return "StackUnderflowException - Stack is empty!";
+            return "StackUnderflowException - Stack is empty";
         }
 };
 
-template <typename T>
-class Stack 
+template <typename T, int capacity> //typename,,not class
+class Stack
 {
     private:
-        T* arr;
-        int top;
-        int capacity;
+        T array[capacity];
+        int topindex;
 
     public:
-        Stack(int size) 
-        {
-            capacity = size;
-            arr = new T[capacity];
-            top = -1;
-        }
+        Stack(int t = -1) : topindex(t) {}
 
-        void push(T value) 
+        void push(T value)
         {
-            if (top >= capacity - 1)
+            if (topindex > capacity-1)
+            {
                 throw StackOverflowException();
-            arr[++top] = value;
+            }
+            array[++topindex] = value;
+            cout << "Pushed " << value << " successfully" << endl;
         }
 
-        T pop() 
+        T pop()
         {
-            if (top < 0)
+            if (topindex < 0)
+            {
                 throw StackUnderflowException();
-            return arr[top--];
-        }
-
-        ~Stack() 
-        {
-            delete[] arr;
+            }
+            return array[topindex--];
         }
 };
 
-int main() 
+int main()
 {
-    Stack<int> s(2);
+    Stack<int,4> stack; //5 numbers array
 
-    try 
+    try
     {
-        s.push(10);
-        s.push(20);
-        s.push(30);
+        stack.push(10);
+        stack.push(33);
+        stack.push(22);
+        stack.push(88);
+        stack.push(77);
+        stack.push(66);
+        stack.pop();
+        stack.pop();
+        stack.pop();
+        stack.push(45);
     }
-    catch (const exception& e) 
+    catch(const StackOverflowException& oe)
     {
-        cout << "Pushing to a full stack: " << e.what() << endl;
+        cout << "Pushing to a full stack: " << oe.what() << endl;
     }
-
-    try 
+    catch(const StackUnderflowException& ue)
     {
-        s.pop();
-        s.pop();
-        s.pop();
+        cout << "Popping from an empty stack: " << ue.what() << endl;
     }
-    catch (const exception& e) 
+    catch(const exception& e)
     {
-        cout << "Popping from an empty stack: " << e.what() << endl;
+        cout << "Some exception occurred" << endl;
     }
 }
