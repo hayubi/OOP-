@@ -5,54 +5,51 @@ using namespace std;
 
 class InsufficientFundsException : public exception 
 {
-    private:
-        string message;
-
     public:
-        InsufficientFundsException(double deficit) 
+        virtual const char* what() const noexcept override 
         {
-            message = "InsufficientFundsException - Deficit: $" + to_string(deficit);
-        }
-
-        const char* what() const noexcept override 
-        {
-            return message.c_str();
+            return "insufficient funds exception";
         }
 };
 
 template <typename T>
-class BankAccount 
+class BankAccount
 {
     private:
         T balance;
-        
-    public:
-        BankAccount(T b) : balance(b) {}
 
-        void withdraw(T amount) 
+    public:
+        BankAccount(T bal) 
         {
-            if (amount > balance)
-                throw InsufficientFundsException(static_cast<double>(amount - balance));
-            balance = balance - amount;
+            balance = bal;
+            cout << "Initial Balance: " << balance << endl;
         }
 
-        T getBalance() const 
+        void withdraw(T amount)
         {
-            return balance;
+            if (amount > balance)
+            {
+                cout << "Deficit: " << amount - balance << endl;
+                throw InsufficientFundsException();
+            }
+            balance = balance - amount;
+            cout << "Balance: " << balance;
         }
 };
 
-int main() 
+int main()
 {
-    BankAccount<double> account(500.00);
-    cout << "Balance: $" << account.getBalance() << endl;
+    BankAccount<int> b(500);
+    int wamt;
+    cout << "Enter the amount to withdraw: " << endl;
+    cin >> wamt;
 
-    try 
+    try
     {
-        account.withdraw(600.00);
+        b.withdraw(wamt);
     }
-    catch (const exception& e) 
+    catch(const exception& e)
     {
-        cout << "Withdraw $600: " << e.what() << endl;
+        cout << "Withdraw " << wamt << ": " << e.what() << endl;
     }
 }
