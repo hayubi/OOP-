@@ -3,16 +3,16 @@
 #include <string>
 using namespace std;
 
-class FileException : public exception 
+class FileException
 {
     public:
-        virtual const char* what() const noexcept override 
+        virtual const char* what() const noexcept
         {
             return "FileException - General file error.";
         }
 };
 
-class FileNotFoundException : public FileException 
+class FileNotFoundException : public FileException
 {
     public:
         const char* what() const noexcept override 
@@ -21,7 +21,7 @@ class FileNotFoundException : public FileException
         }
 };
 
-class PermissionDeniedException : public FileException 
+class PermissionDeniedException : public FileException
 {
     public:
         const char* what() const noexcept override 
@@ -30,17 +30,17 @@ class PermissionDeniedException : public FileException
         }
 };
 
-void readFile(const string& filename) 
+void readFile(const string& filename)
 {
     if (filename == "missing.txt")
         throw FileNotFoundException();
     else if (filename == "secret.txt")
         throw PermissionDeniedException();
     else
-        cout << "Reading '" << filename << "' succeeded." << endl;
+        cout << "Reading '" << filename << "' successfully." << endl;
 }
 
-int main() 
+int main()
 {
     try {
         readFile("secret.txt");
