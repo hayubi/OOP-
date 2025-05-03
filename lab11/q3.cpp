@@ -3,10 +3,10 @@
 #include <string>
 using namespace std;
 
-class FileException
+class FileException : public exception //publiccc...
 {
     public:
-        virtual const char* what() const noexcept
+        virtual const char* what() const noexcept override
         {
             return "FileException - General file error.";
         }
